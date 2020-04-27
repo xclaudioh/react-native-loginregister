@@ -32,9 +32,11 @@ function RegisterForm(props) {
                         .auth()
                         .createUserWithEmailAndPassword(email,password)
                         .then(() => {
+                            setIsVisibleLoading(false);
                             navigation.navigate("MyAccount");
                         })
                         .catch(() => {
+                            setIsVisibleLoading(false);
                             toastRef.current.show("Error al registrar, inténtelo más tarde");
                         })
                 }
