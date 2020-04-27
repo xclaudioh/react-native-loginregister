@@ -1,15 +1,49 @@
 import React, { useState } from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { Input, Icon, Button } from "react-native-elements";
+import { validateEmail } from "../../utils/validation";
+import { withNavigation } from "react-navigation";  
+import Loading from "../Loading";
+import * as firebase from "firebase";
 
-export default function LoginForm() {
+function LoginForm(props) {
+    const { toastRef, navigation } = props;
+
     const [hidePassword, setHidePassword] = useState(true);
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [isVisibleLoading, setIsVisibleLoading] = useState(false);
+
+    const login = async () => {
+        setIsVisibleLoading(true);
+        if (!email || !password) {
+            toastRef.current.show("Todos los campos son obligatorios");
+        } else {
+            if (!validateEmail(email)) {
+                toastRef.current.show("El email no es correcto");
+            } else {
+                await firebase
+                    .auth()
+                    .signInWithEmailAndPassword(email, password)
+                    .then(() => {
+                        navigation.navigate("MyAccount");
+                    })
+                    .catch(() => {
+                        toastRef.current.show("Alguno de los datos es incorrecto");
+                    })
+                
+            }
+        }
+        setIsVisibleLoading(false);
+    };
 
     return (
         <View style={styles.formContainer}>
             <Input 
                 placeholder="Correo Electrónico"
                 containerStyle={styles.inputForm}
+                onChange={e => setEmail(e.nativeEvent.text)}
+                autoCapitalize="none"
                 rightIcon={
                     <Icon
                         type="material-community"
@@ -21,21 +55,31 @@ export default function LoginForm() {
             <Input 
                 placeholder="Contraseña" 
                 containerStyle={styles.inputForm}
+                onChange={e => setPassword(e.nativeEvent.text)}
                 password={true}
                 secureTextEntry={hidePassword}
+                autoCapitalize="none"
                 rightIcon={
                     <Icon
                         type="material-community"
-                        name={ hidePassword ? "eye-outline" : "eye-off-outline-"}
+                        name={ hidePassword ? "eye-outline" : "eye-off-outline"}
                         iconStyle={styles.iconRight}
                         onPress={() => setHidePassword(!hidePassword)}
                     />
                 }
             />
-            <Button title="Ingresar" />
+            <Button 
+                title="Ingresar"
+                containerStyle={styles.boton}  
+                buttonStyle={styles.botonLogin}  
+                onPress={() => login()}
+            />
+            <Loading isVisible={isVisibleLoading} text="Iniciando" />
         </View>
     )
 };
+
+export default withNavigation(LoginForm);
 
 const styles = StyleSheet.create({
     formContainer: {
@@ -50,5 +94,12 @@ const styles = StyleSheet.create({
     },
     iconRight: {
         color: "#c1c1c1"
+    },
+    boton: {
+        marginTop: 20,
+        width: "95%"
+    },
+    botonLogin: {
+        backgroundColor: "#00a680"
     }
 });

@@ -1,0 +1,1 @@
+Para la instalación del proyecto se debe usar npm install y luego yarn install
