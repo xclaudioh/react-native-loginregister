@@ -48,6 +48,7 @@ export default function ChangeEmail(props) {
                 containerStyle={styles.input}
                 defaultValue={email && email}
                 onChange={e => setNewEmail(e.nativeEvent.text)}
+                autoCapitalize="none"
                 rightIcon={{
                     type: "material-community",
                     name: "at",
@@ -61,6 +62,7 @@ export default function ChangeEmail(props) {
                 password={true}
                 secureTextEntry={hidePassword}
                 onChange={e => setPassword(e.nativeEvent.text)}
+                autoCapitalize="none"
                 rightIcon={{
                     type: "material-community",
                     name: hidePassword ? "eye-outline" : "eye-off-outline",

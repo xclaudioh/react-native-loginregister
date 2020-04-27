@@ -65,6 +65,7 @@ export default function ChangePassword(props) {
         password={true}
         secureTextEntry={hidePassword}
         onChange={e => setPassword(e.nativeEvent.text)}
+        autoCapitalize="none"
         rightIcon={{
           type: "material-community",
           name: hidePassword ? "eye-outline" : "eye-off-outline",
@@ -79,6 +80,7 @@ export default function ChangePassword(props) {
         password={true}
         secureTextEntry={hideNewPassword}
         onChange={e => setNewPassword(e.nativeEvent.text)}
+        autoCapitalize="none"
         rightIcon={{
           type: "material-community",
           name: hideNewPassword ? "eye-outline" : "eye-off-outline",
@@ -93,6 +95,7 @@ export default function ChangePassword(props) {
         password={true}
         secureTextEntry={hideNewPasswordRepeat}
         onChange={e => setNewPasswordRepeat(e.nativeEvent.text)}
+        autoCapitalize="none"
         rightIcon={{
           type: "material-community",
           name: hideNewPasswordRepeat ? "eye-outline" : "eye-off-outline",
